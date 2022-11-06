@@ -14,7 +14,7 @@ def git_update():
     
 @app.route("/", methods=['GET'])
 def home():
-    return "Hello world!"
+    return "Siemano kolano"
 
 if __name__ == '__main__':
     app.run(debug=True)
