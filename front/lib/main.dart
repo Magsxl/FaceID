@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +14,10 @@ class MyApp extends StatelessWidget {
     Color color = Theme.of(context).primaryColor;
 
     Widget buttonSection = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buttonColumn(color, Icons.input, 'Wczytaj'),
-        _buttonColumn(color, Icons.send, 'Prześlij'),
+        //_buttonColumn(color, Icons.send, 'Prześlij'),
       ],
     );
     return MaterialApp(
@@ -40,13 +41,20 @@ class MyApp extends StatelessWidget {
         Icon(icon, color: color),
         Container(
           margin: const EdgeInsets.only(top: 8),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color:color,
-            )
+          child: TextButton(
+            child: Text(label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color:color,
+              )
+            ),
+            onPressed: () async {
+              final result = await FilePicker.platform.pickFiles(allowedExtensions: ['jpg','png','bmp','jpeg']);
+              if (result == null) return;
+
+              final file = result.files.first;              
+            },
           )
         )
       ],
