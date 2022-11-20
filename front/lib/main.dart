@@ -50,10 +50,10 @@ class MyApp extends StatelessWidget {
               )
             ),
             onPressed: () async {
-              final result = await FilePicker.platform.pickFiles(allowedExtensions: ['jpg','png','bmp','jpeg']);
-              if (result == null) return;
-
-              final file = result.files.first;              
+              final result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png','bmp','jpeg']);
+              if (result != null) {
+                final file = result.files.first.path;
+              }            
             },
           )
         )
