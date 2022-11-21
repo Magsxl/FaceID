@@ -4,60 +4,70 @@ import 'package:file_picker/file_picker.dart';
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
+ 
   const MyApp({super.key});
   
+  get child => null;
   @override
   Widget build(BuildContext context){
-    
-    Color color = Theme.of(context).primaryColor;
+    String fileName;
 
     Widget buttonSection = Row(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buttonColumn(color, Icons.input, 'Wczytaj'),
-        //_buttonColumn(color, Icons.send, 'Prześlij'),
+          Container(
+            padding: const EdgeInsets.all(25),
+            child: FloatingActionButton(
+              child: const Icon(Icons.input),
+                onPressed: () async {
+                  final result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'bmp', 'jpeg', 'jpg']);
+                  if (result == null) return;
+                  //PlatformFile file = result.files.first;
+                }
+            )
+          ),
+          Container(
+            padding: const EdgeInsets.all(25),
+              child: FloatingActionButton(
+                child: const Icon(Icons.delete),
+                onPressed: () async{}
+              )
+          ),
+          Container(
+            padding: const EdgeInsets.all(25),
+              child: FloatingActionButton(
+                child: const Icon(Icons.person),
+                onPressed: () {},
+              )
+          )
       ],
     );
     return MaterialApp(
-      title: 'Welcome',
+      title: 'FaceID',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Welcome'),
+          title: const Text('FaceID'),
         ),
-        body: Center(
-          child: buttonSection,
-        ),
+        body: Column(
+            children: [
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.only(top: 200, left: 20),
+                  child: Image.network('https://picsum.photos/250?image=9'),
+                ),
+              ),              
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.only(top: 100),
+                  child: buttonSection
+                )
+              ), 
+            ] 
+        ),  
       ),
-    );
-  }
-
-  Column _buttonColumn(Color color, IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          child: TextButton(
-            child: Text(label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color:color,
-              )
-            ),
-            onPressed: () async {
-              final result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png','bmp','jpeg']);
-              if (result != null) {
-                final file = result.files.first.path;
-              }            
-            },
-          )
-        )
-      ],
     );
   }
 }
