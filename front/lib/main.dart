@@ -1,5 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +42,7 @@ class ImageForm extends StatefulWidget {
 
 class ImageFormState extends State<ImageForm> {
   final _formKey = GlobalKey<FormState>();
+  Uint8List _pickedImage = Uint8List(8);
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +54,7 @@ class ImageFormState extends State<ImageForm> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 200, left: 20),
-            child: Image.network('https://picsum.photos/250?image=9'),
+            child: _pickedImage == null ? Image.memory(_pickedImage, fit: BoxFit.fill,) : Container(),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -63,8 +64,16 @@ class ImageFormState extends State<ImageForm> {
                 child: FloatingActionButton(
                   child: const Icon(Icons.input),
                     onPressed: () async {
-                      final imageFile = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'bmp', 'jpeg', 'jpg']);
-                      if (imageFile == null) return;
+                      final ImagePicker picker = ImagePicker();
+                      var image = await picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        var selected = await image.readAsBytes();
+                        setState(() {
+                          _pickedImage = selected;
+                        });
+                      } else {
+                        print('No image has been picked');
+                      }
                     }
                 )
               ),
@@ -79,13 +88,7 @@ class ImageFormState extends State<ImageForm> {
                 padding: const EdgeInsets.all(25),
                   child: FloatingActionButton(
                     child: const Icon(Icons.check),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Data has been sent...')),
-                        );
-                      }
-                    },
+                    onPressed: () {},
                   )
               )
             ],

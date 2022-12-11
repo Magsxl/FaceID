@@ -32,8 +32,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  #pick and read files
-  file_picker: ^4.1.3
+  #pick and read images
+  image_picker: ^0.8.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
