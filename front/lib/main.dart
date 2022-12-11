@@ -16,13 +16,7 @@ class MyApp extends StatelessWidget {
           title: const Text('FaceID'),
         ),
         body: Column(
-            children: [
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.only(top: 200, left: 20),
-                  child: Image.network('https://picsum.photos/250?image=9'),
-                ),
-              ),              
+            children: [          
               Center(
                 child: Container(
                   padding: const EdgeInsets.only(top: 100),
@@ -52,43 +46,52 @@ class ImageFormState extends State<ImageForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Row(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(25),
-            child: FloatingActionButton(
-              child: const Icon(Icons.input),
-                onPressed: () async {
-                  final imageFile = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'bmp', 'jpeg', 'jpg']);
-                  if (imageFile == null) return;
-                }
-            )
+            padding: const EdgeInsets.only(top: 200, left: 20),
+            child: Image.network('https://picsum.photos/250?image=9'),
           ),
-          Container(
-            padding: const EdgeInsets.all(25),
-              child: FloatingActionButton(
-                child: const Icon(Icons.delete),
-                onPressed: () async{}
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(25),
+                child: FloatingActionButton(
+                  child: const Icon(Icons.input),
+                    onPressed: () async {
+                      final imageFile = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['png', 'bmp', 'jpeg', 'jpg']);
+                      if (imageFile == null) return;
+                    }
+                )
+              ),
+              Container(
+                padding: const EdgeInsets.all(25),
+                  child: FloatingActionButton(
+                    child: const Icon(Icons.delete),
+                    onPressed: () async{}
+                  )
+              ),
+              Container(
+                padding: const EdgeInsets.all(25),
+                  child: FloatingActionButton(
+                    child: const Icon(Icons.check),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Data has been sent...')),
+                        );
+                      }
+                    },
+                  )
               )
+            ],
           ),
-          Container(
-            padding: const EdgeInsets.all(25),
-              child: FloatingActionButton(
-                child: const Icon(Icons.check),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Data has been sent...')),
-                    );
-                  }
-                },
-              )
-          )
         ],
-      )
+      ),
     );
   }
 }
