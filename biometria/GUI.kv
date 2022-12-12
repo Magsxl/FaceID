@@ -1,0 +1,63 @@
+#:import Factory kivy.factory.Factory
+
+<File>
+	title: "Wybierz plik"
+    size_hint: .9, .9
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: "vertical"
+        FileChooser:
+            id: filechooser
+            path: "C:/Users/mbart/PycharmProjects/biometria"
+            FileChooserIconLayout
+
+        BoxLayout:
+            size_hint: (1, 0.1)
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            spacing: 20
+            Button:
+                text: "Anuluj"
+                on_release: root.dismiss()
+            Button:
+                text: "Załaduj"
+                on_release: root.load(filechooser.selection)
+                id: ldbtn
+                disabled: True if filechooser.selection==[] else False
+
+<MyLayout>
+    id: my_widget
+	FloatLayout:
+		size: root.width, root.height
+
+		Label:
+		    id: face_name
+            text: ""
+            font_size: 32
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'center_y': 0.7, 'center_x': 0.5}
+
+        MyButton:
+		    text: "Wczytaj plik"
+		    pos_hint: {"x":0.4 ,"y":0.85}
+            on_press: root.open_popup()
+
+		MyButton:
+		    text: "Start"
+		    pos_hint: {"x":0.4,"y":0.75}
+		    on_press: root.start(),
+
+
+		Image:
+		    id: my_image
+		    source: ""
+		    state: 'play'
+            pos_hint: {'center_y': 0.3, 'center_x': 0.5}
+			size_hint: .7, .7
+			volume: 0
+
+<MyButton@Button>
+    font_size: 16
+    size_hint: (0.2,0.1)
+
